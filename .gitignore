@@ -52,3 +52,8 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Ninja-IDE Files
+*.nja
+
+# Database files
+*.db

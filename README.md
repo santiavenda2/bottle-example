@@ -1,5 +1,4 @@
-Bottle Example
-==============
+# Bottle Example
 
 A ToDo RestFul app made by [Bottle Framework](http://bottlepy.org/docs/dev/index.html).
 
@@ -9,5 +8,12 @@ Added unit testing using:
 
 Backend using [sqlite3](https://docs.python.org/2/library/sqlite3.html)
 
-Installation
-------------
+## Tasks to do
+- [x] implements rest interface with bottle
+- [x] add unittest
+- [x] add sqlite3 backend
+- [ ] add installation instructions
+- [ ] add mongodb backend
+
+
+## Installation instructions

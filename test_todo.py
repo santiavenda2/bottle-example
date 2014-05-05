@@ -5,6 +5,7 @@ import todolist
 app = webtest.TestApp(todolist.app)
 
 
+
 class TodoAppTestCase(unittest.TestCase):
 
     def test_todo_page(self):
@@ -25,19 +26,19 @@ class TodoAppTestCase(unittest.TestCase):
         self.assertEquals(task['status'], 1)
 
     def test_create_task(self):
-        params = {'description': "Test task", 'status':0}
+        params = {'description': "Test task", 'status': 0}
         response = app.post_json('/tasks', params=params)
         self.assertEquals(response.status_int, 200)
 
     def test_update_task(self):
         id = 5
         params = {'description': "Test task", 'status':0}
-        response = app.push_json('/tasks/%s' %id, params=params)
+        response = app.put_json('/tasks/%s' %id, params=params)
         self.assertEquals(response.status_int, 200)
 
     def test_remove_task(self):
         id = 5
-        response = app.delete('/tasks/%s' %id, params=params)
+        response = app.delete('/tasks/%s' %id)
         self.assertEquals(response.status_int, 200)
 
 

@@ -55,5 +55,8 @@ docs/_build/
 # Ninja-IDE Files
 *.nja
 
+# PyCharm IDE Files
+*.idea
+
 # Database files
 *.db

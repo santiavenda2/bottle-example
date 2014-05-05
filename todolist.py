@@ -1,11 +1,12 @@
 
-from bottle import Bottle, run, request, template
+from bottle import Bottle, run, request, template, response, HTTPError, HTTP_CODES
 
 from dao import ToDoSqlDAO
 
 dao = ToDoSqlDAO('todo.db')
 
 app = Bottle()
+
 
 @app.route('/todo')
 def todo_list():
@@ -27,7 +28,7 @@ def get_task(task_id):
     if task:
         return get_task_dict(task)
     else:
-        return app.error(code=404)
+        return HTTPError(404, HTTP_CODES[404])
 
 
 @app.post('/tasks')
@@ -35,12 +36,13 @@ def create_task():
     params = request.json
     description = params['description']
     dao.create_task(description)
+    response.status = 201
     return {'id': 0}
 
 
 @app.delete('/tasks/<task_id>')
 def remove_task(task_id):
-    dao.remove_task(task_id)
+    dao.delete_task(task_id)
 
 
 @app.put('/tasks/<task_id>')

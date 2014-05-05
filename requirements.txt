@@ -8,3 +8,4 @@ requests==2.2.1
 six==1.6.1
 waitress==0.8.8
 wsgiref==0.1.2
+mock==1.0.1

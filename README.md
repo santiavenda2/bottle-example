@@ -1,13 +1,19 @@
-bottle-example
-==============
+# Bottle Example
 
-A TODO webapp made by [http://bottlepy.org/docs/dev/index.html Bottle] Framework.
+A ToDo RestFul app made by [Bottle Framework](http://bottlepy.org/docs/dev/index.html).
 
 Added unit testing using: 
- * [https://pypi.python.org/pypi/mock Mock]
- * [https://pypi.python.org/pypi/WebTest Webtest]
+ * [Mock](https://pypi.python.org/pypi/mock)
+ * [Webtest](https://pypi.python.org/pypi/WebTest)
 
-Backend using [https://docs.python.org/2/library/sqlite3.html sqlite3]
+Backend using [sqlite3](https://docs.python.org/2/library/sqlite3.html)
 
-Installation
-------------
+## Tasks to do
+- [x] implements rest interface with bottle
+- [x] add unittest
+- [x] add sqlite3 backend
+- [ ] add installation instructions
+- [ ] add mongodb backend
+
+
+## Installation instructions

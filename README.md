@@ -17,7 +17,7 @@ Backend using [sqlite3](https://docs.python.org/2/library/sqlite3.html)
 - [x] add unittest
 - [x] add sqlite3 backend
 - [x] add REST Client
-- [ ] add installation instructions
+- [ ] deploy on apache (add instructions)
 - [ ] add installation instructions
 - [ ] add mongodb backend
 

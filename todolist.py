@@ -35,21 +35,23 @@ def get_task(task_id):
 def create_task():
     params = request.json
     description = params['description']
-    dao.create_task(description)
+    task_id = dao.create_task(description)
     response.status = 201
-    return {'id': 0}
+    return {'task_id': task_id}
 
 
 @app.delete('/tasks/<task_id>')
 def remove_task(task_id):
     dao.delete_task(task_id)
+    response.status = 204
 
 
 @app.put('/tasks/<task_id>')
 def modify_task(task_id):
-    description = request.json['description']
-    status = request.json['status']
+    description = request.json['description'] if 'description' in request.json else None
+    status = request.json['status'] if 'status' in request.json else None
     dao.modify_task(task_id, description, status)
+    response.status = 204
 
 
 def get_task_dict(task_as_list):
@@ -58,4 +60,5 @@ def get_task_dict(task_as_list):
             'status': task_as_list[2]}
 
 if __name__ == '__main__':
-    run(app, host='localhost', port=8080, debug=True, reloader=True)
+    dao.load_data()
+    run(app, host='localhost', port=9090, debug=True, reloader=True)

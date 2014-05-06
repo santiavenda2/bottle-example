@@ -8,6 +8,11 @@ app = webtest.TestApp(todolist.app)
 
 
 class TodoAppTestCase(unittest.TestCase):
+    """
+    Unit testing class:
+    These test doesn't need a server running, simulates the wsgi app
+    I mock the calls to todolist.dao to avoid configure a db connection
+    """
 
     @patch('todolist.dao')
     def test_todo_page(self, mock_dao):
@@ -66,6 +71,7 @@ class TodoAppTestCase(unittest.TestCase):
         params = {'description': "Test task", 'status': 0}
         response = app.post_json('/tasks', params=params)
         self.assertEquals(response.status_int, 201)
+        self.assertEqual(response.json, {'task_id': 1})
         mock_dao.create_task.assert_called_once_with("Test task")
 
     @patch('todolist.dao')
@@ -75,7 +81,7 @@ class TodoAppTestCase(unittest.TestCase):
         task_id = 5
         params = {'description': "Test task", 'status': 0}
         response = app.put_json('/tasks/%s' % task_id, params=params)
-        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.status_int, 204)
 
         mock_dao.modify_task.assert_called_once_with("5", "Test task", 0)
 
@@ -85,7 +91,7 @@ class TodoAppTestCase(unittest.TestCase):
 
         task_id = 5
         response = app.delete('/tasks/%s' % task_id)
-        self.assertEquals(response.status_int, 200)
+        self.assertEquals(response.status_int, 204)
 
         mock_dao.delete_task.assert_called_once_with("5")
 

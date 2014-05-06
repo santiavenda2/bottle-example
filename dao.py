@@ -58,15 +58,28 @@ class ToDoSqlDAO(ToDoDAO):
     def create_task(self, description):
         try:
             with self.con:
+                c = self.con.cursor()
                 stm = "INSERT INTO todo (task,status) VALUES (\'%s\',0)" % (description,)
-                self.con.execute(stm)
+                c.execute(stm)
+                return c.lastrowid
         except Exception as e:
             print e.message
             raise e
 
-    def modify_task(self, task_id, description, status):
+    def modify_task(self, task_id, description=None, status=None):
+
         with self.con:
-            self.con.execute("UPDATE todo SET task=\'%s\' , status=\'%s\' WHERE id == \'%s'" % (description, status, task_id))
+            if description is not None and status is not None:
+                self.con.execute("UPDATE todo SET task = \'%s\' , status = \'%s\' WHERE id == \'%s\'" % (description, status, task_id))
+            elif description is not None:
+                self.con.execute("UPDATE todo SET task = \'%s\' WHERE id == \'%s\'" % (description, task_id))
+            elif status is not None:
+                self.con.execute("UPDATE todo SET status = \'%s\' WHERE id == \'%s\'" % (status, task_id))
+            else:
+                print "Nothing to modify"
+
+    def finish_task(self, task_id):
+        self.modify_task(task_id, status=1)
 
     def delete_task(self, task_id):
         with self.con:
@@ -79,10 +92,12 @@ class ToDoSqlDAO(ToDoDAO):
 
     def load_data(self):
         self.clean_todo_table()
-        with self.con:
-            self.create_task('Visit the Python website')
-            self.create_task('Visit the Bottle website')
-            self.create_task('Test various editors for and check the syntax highlighting')
-            self.create_task('Choose your favorite WSGI-Framework')
+        task_id_unitest = self.create_task('UnitTesting app')
+        task_id_client = self.create_task('Create Client')
+        task_id_apache = self.create_task('Deploy on apache server')
+        task_id_heroku = self.create_task('Deploy on heroku')
+
+        self.finish_task(task_id_unitest)
+
 
 

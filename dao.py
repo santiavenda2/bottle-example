@@ -40,7 +40,7 @@ class ToDoSqlDAO(ToDoDAO):
 
     def __init__(self, db_name):
         # Warning: This file is created in the current directory
-        self.con = sqlite3.connect(db_name)
+        self.con = sqlite3.connect(db_name, check_same_thread=False)
 
     def find_tasks(self):
         c = self.con.cursor()

@@ -52,5 +52,16 @@ def get_task_dict(task_as_list):
             'status': task_as_list[2]}
 
 if __name__ == '__main__':
-    dao.load_data()
-    run(app, host='localhost', port=9090, debug=True, reloader=True)
+    server = "gunicorn"
+    print "Runnning on: %s" % server
+    if server == "cherrypy":
+        run(app, server="cherrypy", host='localhost', port=9090)
+    elif server == "paste":
+        run(app, server="paste", host='localhost', port=9090)
+    elif server == "gunicorn":
+        run(app, server="gunicorn", host='localhost', port=9090)
+    elif server == "apache":
+        #TODO
+        pass
+    else:
+        run(app, host='localhost', port=9090, debug=True, reloader=True)

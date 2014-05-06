@@ -7,14 +7,6 @@ dao = ToDoSqlDAO('todo.db')
 
 app = Bottle()
 
-
-@app.route('/todo')
-def todo_list():
-    tasks = dao.find_tasks()
-    output = template('make_table', rows=tasks)
-    return output
-
-
 @app.get('/tasks')
 def task_list():
     tasks = dao.find_tasks()

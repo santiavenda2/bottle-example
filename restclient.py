@@ -56,7 +56,6 @@ class RestClient(object):
         return response.status_code == requests.codes.no_content
 
 
-
 if __name__ == "__main__":
     rc = RestClient("http://localhost:9090/")
     tasks = rc.get_tasks()

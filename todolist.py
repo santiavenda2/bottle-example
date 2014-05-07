@@ -3,9 +3,17 @@ from bottle import Bottle, run, request, template, response, HTTPError, HTTP_COD
 
 from dao import ToDoSqlDAO
 
-dao = ToDoSqlDAO('todo.db')
+import os
+
+path = os.path.abspath(os.path.dirname(__file__))
+
+dao = ToDoSqlDAO(os.path.join(path, 'todo.db'))
 
 app = Bottle()
+
+@app.get('/')
+def index():
+    return "ToDo app is up and running"
 
 @app.get('/tasks')
 def task_list():

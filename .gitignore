@@ -60,3 +60,5 @@ docs/_build/
 
 # Database files
 *.db
+bottle-example.com/venv/
+.vagrant

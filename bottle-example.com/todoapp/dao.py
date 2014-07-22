@@ -40,6 +40,7 @@ class ToDoSqlDAO(ToDoDAO):
 
     def __init__(self, db_name):
         # Warning: This file is created in the current directory
+        db_name = '/var/www/bottle-example.com/todo.db'
         self.con = sqlite3.connect(db_name, check_same_thread=False)
 
     def find_tasks(self):

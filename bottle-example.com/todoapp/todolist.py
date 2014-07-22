@@ -1,5 +1,5 @@
 
-from bottle import Bottle, run, request, template, response, HTTPError, HTTP_CODES
+from bottle import Bottle, request, response, HTTPError, HTTP_CODES
 
 from dao import ToDoSqlDAO
 
@@ -11,9 +11,11 @@ dao = ToDoSqlDAO(os.path.join(path, 'todo.db'))
 
 app = Bottle()
 
+
 @app.get('/')
 def index():
     return "ToDo app is up and running"
+
 
 @app.get('/tasks')
 def task_list():
@@ -58,18 +60,3 @@ def get_task_dict(task_as_list):
     return {'id': task_as_list[0], 
             'description': task_as_list[1], 
             'status': task_as_list[2]}
-
-if __name__ == '__main__':
-    server = "gunicorn"
-    print "Runnning on: %s" % server
-    if server == "cherrypy":
-        run(app, server="cherrypy", host='localhost', port=9090)
-    elif server == "paste":
-        run(app, server="paste", host='localhost', port=9090)
-    elif server == "gunicorn":
-        run(app, server="gunicorn", host='localhost', port=9090)
-    elif server == "apache":
-        #TODO
-        pass
-    else:
-        run(app, host='localhost', port=9090, debug=True, reloader=True)

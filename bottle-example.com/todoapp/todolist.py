@@ -11,6 +11,7 @@ dao = ToDoSqlDAO(os.path.join(path, 'todo.db'))
 
 app = Bottle()
 
+process = {}
 
 @app.get('/')
 def index():
@@ -54,6 +55,40 @@ def modify_task(task_id):
     status = request.json['status'] if 'status' in request.json else None
     dao.modify_task(task_id, description, status)
     response.status = 204
+
+@app.post('/execution')
+def create_process():
+    from multiprocessing import Process
+    p = Process(group=None, target=infinite_proccess, name="infinite", args=(), kwargs={})
+    p.daemon = True
+    p.start()
+    process[p.pid] = p
+    process_json = dict([(p.pid, p.is_alive()) for pid, p in process.iteritems()])
+    return {'process_id': p.pid, 'processes': process_json}
+
+@app.delete('/execution/<processid>')
+def kill_process(processid):
+    pid = int(processid)
+    if pid in process:
+        p = process[pid]
+        if p.is_alive():
+            p.terminate()
+            while p.is_alive():
+                print "Is alive"
+
+        p.join()
+        del process[pid]
+        return {'process_id': p.pid, 'exitcode': p.exitcode}
+
+@app.get('/execution')
+def get_executions():
+    process_json = dict([(p.pid, p.is_alive()) for pid, p in process.iteritems()])
+    return {'processes': process_json}
+
+
+def infinite_proccess():
+    import time
+    time.sleep(60)
 
 
 def get_task_dict(task_as_list):

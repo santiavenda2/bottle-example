@@ -58,23 +58,23 @@ def modify_task(task_id):
 
 @app.post('/execution')
 def create_process():
-    from multiprocessing import Process
-    p = Process(group=None, target=infinite_proccess, name="infinite", args=(), kwargs={})
-    p.daemon = True
+    from multiprocessing import Process, Event
+    stop_event = Event()
+    p = Process(group=None, target=infinite_proccess, name="infinite", args=(stop_event,), kwargs={})
+    p.daemon = False
     p.start()
-    process[p.pid] = p
-    process_json = dict([(p.pid, p.is_alive()) for pid, p in process.iteritems()])
+    process[p.pid] = p, stop_event
+    process_json = dict([(p.pid, p.is_alive()) for pid, (p, se) in process.iteritems()])
     return {'process_id': p.pid, 'processes': process_json}
+
 
 @app.delete('/execution/<processid>')
 def kill_process(processid):
     pid = int(processid)
     if pid in process:
-        p = process[pid]
+        p, se = process[pid]
         if p.is_alive():
-            p.terminate()
-            while p.is_alive():
-                print "Is alive"
+            se.set()
 
         p.join()
         del process[pid]
@@ -82,13 +82,17 @@ def kill_process(processid):
 
 @app.get('/execution')
 def get_executions():
-    process_json = dict([(p.pid, p.is_alive()) for pid, p in process.iteritems()])
+    process_json = dict([(p.pid, p.is_alive()) for pid, (p, es) in process.iteritems()])
     return {'processes': process_json}
 
 
-def infinite_proccess():
+def infinite_proccess(stop_event):
     import time
-    time.sleep(60)
+    i = 0
+    while not stop_event.is_set():
+        time.sleep(10)
+        print i
+        i += 1
 
 
 def get_task_dict(task_as_list):

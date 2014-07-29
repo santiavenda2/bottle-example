@@ -18,3 +18,7 @@ virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 deactivate
+
+service apache2 reload
+
+apt-get install screen
